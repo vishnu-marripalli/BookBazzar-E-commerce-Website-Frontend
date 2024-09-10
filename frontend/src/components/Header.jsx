@@ -216,8 +216,8 @@ function Header(){
                         </ul>    )}
                 <button className='hidden md:block border-2 border-primary bg-primary px-6 py-1 text-sm text-white rounded-sm'
                 onClick={()=>{
-                  navigate('/login')
-                  // toast("hello")
+                  // navigate('/login')
+                  toast("hello")
                 }}>
                   Login</button>
                 <div className='block md:hidden'>
@@ -228,7 +228,7 @@ function Header(){
                 </div>
             </div>
             
-            <Toaster position='top-center' />
+            <Toaster position='top-center'  />
           {hamburger? <Drawer />: ''}
           </div>
        </ThemeProvider>

@@ -1,38 +1,34 @@
-.App {
-  text-align: center;
+/* 
+.progress-bar-wrapper {
+  width: 50px;
+  height: 1px;
+  background-color: #c689c697;
+  margin: 0 5px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+.progress-bar {
+  width: 100%;
+  height: 100%;
+  background-color: #c689c697;
+  transition: background-color 0.5s ease;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+
+.progress-bar.active {
+  background-color: #937DC2;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
+.slick-dots li{
+  width: max-content;
+  height: 20px;
+}  */
 
-.App-link {
-  color: #61dafb;
+.no-arrows::-webkit-outer-spin-button,
+.no-arrows::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.no-arrows {
+  appearance: textfield;
 }

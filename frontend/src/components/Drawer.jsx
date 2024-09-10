@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { Toaster } from 'sonner';
 import {gsap} from 'gsap'
 import { toggleHamburger } from '../features/features';
+import SearchBar from './ui/SearchBar';
 
 
 
@@ -39,6 +40,7 @@ export default function Drawer() {
       return () => {
         window.removeEventListener('resize',handleresize)
       }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     
 
@@ -64,6 +66,9 @@ export default function Drawer() {
     <div ref={draweref} className='w-[100vw] h-[90vh] top-0 left-0 translate-x-[-100vh]'>
         <div className='w-full bg-white h-full flex flex-col justify-between'>
             <ul>
+                <li className='p-2 border-b-2 border-voilet-100'>
+                <SearchBar />
+                </li>
                 <li>
                     <div className=" border-b-2 border-voilet-100 px-5 py-3 font-medium text-[15px]" >
                     <Link
@@ -87,12 +92,13 @@ export default function Drawer() {
                     <Link
                     to='/'
                     onClick={()=>{
-                        Hamburger();
+                        
                         if(!isAuthenticated){
                             toast('Please Login to Sell Your Books ')
                             // navigate('/login')
 
                           }
+                        //   Hamburger();
                     }}>
                     Sell your books
                     </Link>
@@ -109,7 +115,7 @@ export default function Drawer() {
                 </li>
             </ul>
             <div className='w-full'>
-                {isAuthenticated ? (<div className=" border-t-2 border-voilet-100 px-5 py-3 font-medium text-[15px]" >
+                {isAuthenticated ? (<div className=" border-t-2 border-voilet-100 px-5 py-5 font-medium text-[15px]" >
                 <Link
                 to='/user'
                 className='flex  items-center gap-4'
@@ -127,7 +133,7 @@ export default function Drawer() {
                      /> <span className='font-medium text-base'>Account</span>
                 </Link>
                 </div>)
-                 :(<div className=" border-t-2 border-voilet-100 px-5 py-3 font-medium text-[15px]" >
+                 :(<div className=" border-t-2 border-voilet-100 px-5 py-5 font-medium text-[15px]" >
                 <Link
                 to='/login'
                 className='flex  items-center gap-4'
@@ -141,7 +147,7 @@ export default function Drawer() {
                 </Link>
                 </div>)}
                 {isAuthenticated  ?
-                (  <div className=" border-t-2 border-voilet-100 px-5 py-3 font-medium text-[15px]" >
+                (  <div className=" border-t-2 border-voilet-100 px-5 py-5 font-medium text-[15px]" >
                     <Link
                     to='/logout'
                     className='flex  items-center gap-4'
