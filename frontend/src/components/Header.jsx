@@ -25,7 +25,7 @@ function Header(){
   const [isFixed,setisFixed] =useState(false)
 
   const hamburger = useSelector((state)=> state.features.hamburger)
-  console.log(hamburger)
+
 
   const isAuthenticated = false;
 

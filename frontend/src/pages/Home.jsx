@@ -77,11 +77,11 @@ const Home =()=>{
           </div>
           <div className="sm:px-4 px-1 flex sm:gap-16 gap-4">
 
-            <button className='border-2 border-primary bg-primary w-[150px] px-6 py-2 text-sm text-white rounded-sm'
+            <button className='hover:bg-white hover:text-primary   duration-200 ease-in border-2 border-primary bg-primary w-[150px] px-6 py-2 text-sm text-white rounded-sm'
             onClick={()=>{
               navigate('/shop')
              }}>Shop Now</button>
-            <button className='border-2 border-primary bg-white w-[150px] px-6 py-2 text-sm text-primary rounded-sm
+            <button className='hover:bg-primary hover:text-white   duration-200 ease-in border-2 border-primary bg-white w-[150px] px-6 py-2 text-sm text-primary rounded-sm
             'onClick={()=>{
               if(!isAuthenticated){
                 toast('Please login to Sell your Books');

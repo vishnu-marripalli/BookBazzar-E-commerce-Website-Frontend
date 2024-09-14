@@ -8,8 +8,9 @@ import gsap from 'gsap';
 
 
 const ProductCard = (props)=> {
-
+  
     const book= props.book
+    const size = props.Home
     const [hovered, setHovered] = useState(false);
     const [isWishlist, setIsWishlist] = useState(book.wishlist);
     const navigate = useNavigate()
@@ -43,38 +44,40 @@ const ProductCard = (props)=> {
         // }
 
       };
-      const Productref = useRef(null)
-      useEffect(() => {
+      // const Productref = useRef(null)
+      // useEffect(() => {
         
-        gsap.to(Productref.current,{
-          opacity: 1,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: Productref.current,
-            start: "top 0%", // Start animation when the top of the element is 80% in view
-          },
-        })
+      //   gsap.to(Productref.current,{
+      //     opacity: 1,
+      //     duration: 1,
+      //     ease: "power3.out",
+      //     scrollTrigger: {
+      //       trigger: Productref.current,
+      //       start: "top 0%", // Start animation when the top of the element is 80% in view
+      //     },
+      //   })
       
-        return () => {
+      //   return () => {
        
-        }
-      }, [])
+      //   }
+      // }, [])
 
   return (
 
     <>
-        <div className="  shadow-lg border border-gray-200 m-2 p-2 min-w-[150px] max-w-[250px]  overflow-hidden h-auto"
-        >
+        <div className={size ?"shadow-lg border border-gray-200 m-2 p-2 min-w-[150px] max-w-[250px]  overflow-hidden h-auto":
+          "shadow-lg border border-gray-200 m-2 p-2 min-w-[150px] max-w-[170px] sm:max-w-[250px]  overflow-hidden h-auto"}>
             <div className="flex items-center justify-center">
             <img src={hovered ? book.subImages[0].url : book.mainImage.url}
             alt={book.description}
-            className="  h-[350px] p-2 max-w-fit cursor-pointer transition-all duration-500 ease-in-out delay-500 hover:scale-105 "
+            className={size ? "h-[350px] p-2 max-w-fit cursor-pointer transition-all duration-500 ease-in-out delay-500 hover:scale-105 ":
+              'h-[150px] sm:h-[350px] p-2 max-w-fit cursor-pointer transition-all duration-500 ease-in-out delay-500 hover:scale-105'
+            }
             // onMouseEnter={() => setHovered(true)}
             // onMouseLeave={() => setHovered(false)}
             onClick={() => {
               window.scroll(0, 0);
-              navigate(`/`);
+              navigate(`/book/${book.title}/${book._id}`)
             }}
             loading="lazy" />
             </div>
@@ -101,7 +104,7 @@ const ProductCard = (props)=> {
                         )}
                         </div>
                     </div>
-                    <button className='border-2 w-full gap-2 flex items-center justify-center text-[18px] border-primary bg-primary px-6 py-2 text-sm text-white rounded-sm'
+                    <button className='border-2 w-full gap-2 flex items-center justify-center text-[18px] border-primary bg-primary  sm:px-6 py-2 text-sm text-white rounded-sm'
                     onClick={()=>{
                         if(!isAuthenticated){
                             toast('Please login to Add Book to cart');

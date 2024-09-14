@@ -32,3 +32,7 @@
 .no-arrows {
   appearance: textfield;
 }
+
+.data-[state=open]{
+  background-color: white;
+}

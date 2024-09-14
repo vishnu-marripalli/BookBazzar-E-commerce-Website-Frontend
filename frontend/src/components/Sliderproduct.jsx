@@ -10,11 +10,12 @@ gsap.registerPlugin(ScrollTrigger);
 
 
 
-const Sliderproduct =({title})=> {
+const Sliderproduct =({title, category})=> {
 
-const books = useSelector((state)=>(state.features.books))
+const UncategorizedBooks = useSelector((state)=>(state.features.books))
 
-
+  const [books,setbooks]=useState([]);
+  
 
       const [isLoading, setIsLoading] = useState(false);
 
@@ -91,7 +92,85 @@ const books = useSelector((state)=>(state.features.books))
       //   },
       };
     
+      const daysAgo = (days) => {
+        const date = new Date();
+        date.setDate(date.getDate() - days);
+        return date;
+      };
       
+      function categorizeBooks(UncategorizedBooks) {
+        const categories = {
+          mostRated: [],
+          trending: [],
+          other: [],
+        };
+      
+        const trendingThresholdDate = daysAgo(30); // Books created within the last 30 days are trending
+        const mostRatedThreshold = 4.5; // Books with an average rating of 4.5 or higher are most rated
+      
+        UncategorizedBooks.forEach((book) => {
+          const createdAtDate = new Date(book.createdAt);
+          
+          if (book.rating.averageRating >= mostRatedThreshold) {
+            categories.mostRated.push(book);
+          }
+      
+          if (createdAtDate >= trendingThresholdDate) {
+            categories.trending.push(book);
+          }
+      
+          // Add books to the 'other' category if they don't fall into most rated or trending
+          if (book.rating.averageRating < mostRatedThreshold && createdAtDate < trendingThresholdDate) {
+            categories.other.push(book);
+          }
+        });
+
+        return categories;
+      }
+
+      // const categorizeBooks = (books) => {
+      //   return books.map((book) => {
+      //     let category = "";
+      
+      //     // Check for Most Rated category (more than 400 reviews)
+      //     if (book.rating.totalReviews > 400) {
+      //       category = "Most Rated";
+      //     }
+      
+      //     // Check for Trending category (rating above 4.6)
+      //     if (book.rating.averageRating > 4.6) {
+      //       category = category ? category + ", Trending" : "Trending";
+      //     }
+      
+      //     return { ...book, category }; // Add the category field to each book object
+      //   });
+      // };
+      
+      // const categorizedBooks = categorizeBooks(books);
+      // console.log(categorizedBooks);
+      
+      
+     
+    
+      
+      useEffect(() => {
+        const categorizedBooks = categorizeBooks(UncategorizedBooks);
+        
+        if(title==="Most Rated"){
+          setbooks(categorizedBooks.mostRated)
+        }
+        if(title==="Trending"){
+          setbooks(categorizedBooks.trending)
+        }
+        
+        
+        return () => {
+          
+        }
+      }, [])
+      
+
+
   return (
     <>
    <div
@@ -148,7 +227,7 @@ const books = useSelector((state)=>(state.features.books))
                 {/* Render the Product component within Slider */}
                 {books.map((book) => (
                   <div key={books._id}>
-                    <ProductCard book={book} />
+                    <ProductCard book={book} Home={true} />
                   </div>
                 ))}
               </Slider>
@@ -156,7 +235,7 @@ const books = useSelector((state)=>(state.features.books))
               <div className="grid md:grid-cols-4 grid-cols-2">
                 {books.map((book) => (
                   <div key={books._id}>
-                    <ProductCard book={book} />
+                    <ProductCard book={book} Home={true} />
                   </div>
                 ))}
                   </div>

@@ -395,6 +395,7 @@ const featureSlice = createSlice({
     initialState,
     reducers:{
         toggleHamburger(state){
+          
             state.hamburger = !state.hamburger;
         }
 
