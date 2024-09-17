@@ -25,9 +25,9 @@ const Checkout = () => {
         watch,
         formState: { errors },
       } = useForm(
-        {defaultValues: {
-            firstName:''
-        }}
+        // {defaultValues: {
+        //     firstName:''
+        // }}
       )
     
 
@@ -50,25 +50,76 @@ const Checkout = () => {
     <Pagebanner title={"Checkout"} />
     {cartCount>0 ?
     (books &&
-        <div className="w-full flex flex-col-reverse md:flex-row h-full py-2 px-2">
-            <div className="md:w-3/5 md:pl-24 px-2 w-full ">
-                <div className="w-full text-[#7B7881] text-base md:flex hidden flex-row">
-                    <div className="w-1/2 flex justify-center">
-                    <h1 className=''>Book</h1>
-                    </div>
-                    <div className="w-1/2 pr-8 flex flex-row justify-evenly">
-                    <h1 className=''>Price</h1>
-                    <h1 className=''>Quantity</h1>
-                    <h1 className=''>Total</h1>
-                    </div>
-                </div>
-                <div className="">
+        <div ref={cartRef} className="w-full flex flex-col-reverse md:flex-row h-full py-2 px-2">
+            <div className="md:w-3/5 md:py-10 md:px-5 px-2 w-full ">
+                <div className="shadow-lg border p-5 border-gray-200 ">
+                    <h1 className="text-[#191C1F] font-bold text-3xl">Shipping Address</h1>
                     <form onSubmit={handleSubmit(submit)}>
-                    <Input 
-                    label="First Name"
-                    type='text'
-                     {...register("firstName")} />
-                     <input type="submit" />
+                      <div className=" flex md:flex-row gap-3">  
+                          <Input 
+                          label="First Name"
+                          type='text'
+                          {...register("firstName",{required:"Name is Required"})} />
+                          <Input 
+                          label="Second Name"
+                          type='text'
+                          {...register("secondName",{required:"Name is Required"})}
+                          />
+                          {errors.firstName && <p className="text-red-500">{errors.firstName.message}</p>}
+                      </div>
+                      <Input 
+                          label="Address Line 1"
+                          type='text'
+                          {...register("addressline1",{required:"Address is Required"})}
+                          />
+                          {errors.addressline1 && <p className="text-red-500">{errors.addressline1.message}</p>}
+                      <Input 
+                          label="Address Line 2"
+                          type='text'
+                          {...register("addressline2")}
+                          />
+                      <Input 
+                          label="Mobile Number"
+                          type='number'
+
+                          {...register("mobileNumber", {
+                            required: "Mobile number is required",
+                            pattern: {
+                              value: /^[0-9]{10}$/,
+                              message: "Mobile number must be 10 digits",
+                            }})}
+                          />
+                          {errors.mobileNumber && <p className="text-red-500">{errors.mobileNumber.message}</p>}
+                      <div className=" flex md:flex-row gap-3">  
+                          <Input 
+                          label="City"
+                          type='text'
+                          {...register("city",{required:"City is Required"})} />
+                          {errors.city && <p className="text-red-500">{errors.city.message}</p>}
+                          <Input 
+                          label="State"
+                          type='text'
+                          {...register("state",{required:"State is Required"})}
+                          />
+                          {errors.state && <p className="text-red-500">{errors.state.message}</p>}
+                      </div>
+                      <div className=" flex md:flex-row gap-3">  
+                          <Input 
+                          label="Pincode"
+                          type='text'
+                          {...register("pincode",{required:"Pincode is Required"})} />
+                          {errors.pincode && <p className="text-red-500">{errors.pincode.message}</p>}
+                          <Input 
+                          label="Country"
+                          type='text'
+                          {...register("country",{required:"Country is Required"})}
+                          />{errors.country && <p className="text-red-500">{errors.country.message}</p>}
+                      </div>
+                      <button type='submit' className='hover:bg-white hover:text-primary  mt-3  duration-200 ease-in border-2 border-primary bg-primary w-[100%] px-6 py-2 text-base sm:text-xl font-semibold text-white rounded-sm'
+                        onClick={()=>{
+                        
+                      }}
+                      >Place Order</button>
                     </form>
                 </div>
             </div>

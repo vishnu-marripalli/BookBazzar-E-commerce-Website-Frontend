@@ -9,6 +9,7 @@ import Shop from "./pages/Shop";
 import Product from "./pages/Product";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import Wishlist from "./pages/Wishlist";
 
 
 
@@ -25,6 +26,8 @@ function App() {
       path="/book/:booktitle/:bookid" element={<Product />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/checkout" element={<Checkout />} />
+      <Route path="/wishlist" element={<Wishlist />} />
+      <Route path="/login" element={<Login />} />
      </Route>
    </Routes>
    </BrowserRouter>
