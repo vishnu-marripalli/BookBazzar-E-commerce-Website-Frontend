@@ -21,19 +21,44 @@ import {useSelector,useDispatch} from 'react-redux'
 import { toggleHamburger } from '../features/features';
 import Drawer from './Drawer';
 
+import ApiCall from '../lib/ApiCall'
+import { logout } from '../features/auth'
+
 function Header(){
   const [isFixed,setisFixed] =useState(false)
 
   const hamburger = useSelector((state)=> state.features.hamburger)
 
 
-  const isAuthenticated = false;
-
+  const isAuthenticated = useSelector((state)=> state.user.isAuthenticated)
 
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const logouthandler=()=>{
+    ApiCall({
+      url: "/api/v1/user/logout",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.data) {
+          dispatch(logout());
+         
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          navigate("/login");
+        } else {
+          toast.error("Error while logging out");
+        }
+      })
+      .catch(() => {
+        toast.error("Error while logging out");
+      });
+  }
 
 
   const toggleHamburgerHander = ()=>{
@@ -173,6 +198,7 @@ function Header(){
                               loading='lazy' 
                               onClick={()=>{
                                 if(!isAuthenticated){
+                                  toast('Please login to Open Cart ')
                                   navigate('/login');
       
                                 }}}
@@ -188,6 +214,7 @@ function Header(){
                             to='/wishlist'
                             onClick={()=>{
                               if(!isAuthenticated){
+                                toast('Please login to open Whishlist ')
                                 navigate('/login');
 
                               }}
@@ -204,6 +231,8 @@ function Header(){
                             to='/user'
                             onClick={()=>{
                               if(!isAuthenticated){
+                                toast('Please login to open profile ')
+
                                 navigate('/login');
 
                               }}}>
@@ -214,12 +243,16 @@ function Header(){
                             </Link>
                           </li>
                         </ul>    )}
-                <button className='hidden md:block border-2 border-primary bg-primary px-6 py-1 text-sm text-white rounded-sm'
-                onClick={()=>{
-                  // navigate('/login')
-                  toast("hello")
-                }}>
-                  Login</button>
+                
+                  {!isAuthenticated ? 
+                  (<button className='hidden md:block border-2 border-primary bg-primary px-6 py-1 text-sm text-white rounded-sm'
+                    onClick={()=>{
+                      navigate('/login')
+                    }}>
+                      Login</button>)
+                  :(<button className='hidden md:block border-2 border-primary bg-primary px-6 py-1 text-sm text-white rounded-sm'
+                  onClick={logouthandler}>
+                    Logout</button>)}
                 <div className='block md:hidden'>
                   {hamburger ? 
                   (<img src={openhamburger} alt="ham" onClick={toggleHamburgerHander} />)

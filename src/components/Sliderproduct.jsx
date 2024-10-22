@@ -105,7 +105,7 @@ const UncategorizedBooks = useSelector((state)=>(state.features.books))
           other: [],
         };
       
-        const trendingThresholdDate = daysAgo(30); // Books created within the last 30 days are trending
+        const trendingThresholdDate = daysAgo(100); // Books created within the last 30 days are trending
         const mostRatedThreshold = 4.5; // Books with an average rating of 4.5 or higher are most rated
       
         UncategorizedBooks.forEach((book) => {

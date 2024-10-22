@@ -1,15 +1,22 @@
 import React,{useRef, useState,useEffect} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Pagebanner from '../components/Pagebanner'
 import Input from '../components/ui/Input'
 import SSOButton from '../components/SSOButton'
 import gsap from 'gsap'
 import { ThreeDots } from "react-loader-spinner";
 import { useForm, SubmitHandler } from "react-hook-form"
+import ApiCall from '../lib/ApiCall'
+import { useDispatch } from 'react-redux'
+import { register,login,loginFailed } from '../features/auth'
+import { toast } from 'sonner'
 
 const Login = () => {
   const [page, setPage] = useState('Signin')
   const [isLoading, setIsLoading] = useState(false);
+
+  const dispatch = useDispatch()
+  const navigate =useNavigate()
 
   const Sliderref =useRef()
   const signupref=useRef()
@@ -44,23 +51,133 @@ const Login = () => {
       gsap.to(signinref.current, { 
         x: "100vh",
         duration: 1,
-        opacity:0, });
+        opacity:0,
+       });
 
   }
   const { register: registerForm1, handleSubmit: handleSubmitForm1, reset: resetForm1, formState: { errors: errorsForm1 } } = useForm();
   const { register: registerForm2, handleSubmit: handleSubmitForm2, reset: resetForm2,watch, formState: { errors: errorsForm2 } } = useForm();
   const setpassword = watch("setpassword");
 
-  const handlelogin =(data)=>{
+  const handlelogin =async(data)=>{
     console.log(data)
-   
+    try {
+      setIsLoading(true);
+      const response = await ApiCall({
+        url: "/api/v1/user/login",
+        method: "POST",
+        data: data
+      });
+      // console.log(response)
+      if (response.data) {
+        const user = response.data?.data?.user;
+        const accessToken = response.data?.data?.accessToken;
+        const refreshToken = response.data?.data?.refreshToken;
+
+        await Promise.all([
+          localStorage.setItem("accessToken", accessToken),
+          localStorage.setItem("refreshToken", refreshToken),
+        ]);
+
+        const userState = {
+          userId: user?._id,
+          fullName: user?.fullName,
+          email: user?.email,
+          isEmailVerified: user?.isEmailVerified,
+          role: user?.role,
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+          isLoggedIn: true,
+        };
+
+        const loginPayload = {
+          isAuthenticated: true,
+          user: userState,
+          error: null,
+        };
+
+        dispatch(login(loginPayload));
+        setIsLoading(false);
+        navigate('/')
+      }  
+      if (response.error) {
+        setIsLoading(false);
+        toast.error("Error While Login")
+        // if (response.error.data.errors) {
+        //   const errorKeys = Object.keys(response.error.data.errors);
+        //   if (errorKeys.length > 0) {
+        //     const firstErrorKey = errorKeys[0];
+        //     const errorObject =
+        //       response.error.data.errors[firstErrorKey];
+        //     const errorMessage = Object.values(errorObject)[0];
+        //     toast.error(errorMessage, {
+        //       position: "top-center",
+        //       autoClose: 3000,
+        //     });
+        //     dispatch(loginFailed(errorMessage));
+        //   } else if (response.error.data.message) {
+        //     toast.error(response.error.data.message, {
+        //       position: "top-center",
+        //       autoClose: 3000,
+        //       hideProgressBar: false,
+        //     });
+        //     dispatch(loginFailed(response.error.data.message));
+        //   }
+        // } else if (response.error.data.message) {
+        //   toast.error(response.error.data.message, {
+        //     position: "top-center",
+        //     autoClose: 3000,
+        //     hideProgressBar: false,
+        //   });
+        //   dispatch(loginFailed(response.error.data.message));
+        // }
+      }
+    } catch (error) {
+      console.log("error is : ", error);
+      setIsLoading(false);
+      toast.error("Login Failed", {
+        position: "top-center",
+        autoClose: 3000,
+      });
+      dispatch(loginFailed("Login Failed"));
+    
+    }
+    
   }
-  const handleregister = (data) =>{
+  const handleregister = async(data) =>{
     console.log(data)
+    try {
+      setIsLoading(true)
+     const response= await ApiCall({
+        url:'/api/v1/user/register',
+        method:"POST",
+        data:data,
+      })
+      setIsLoading(false);
+      if(response.data){
+        console.log(response)
+        dispatch(register(response.data.data.user.email))
+        navigate("/email-verification");
+
+      }
+     } catch (error) {
+      
+     }
     
   }
   const SSOHandler =()=>{
-
+    try {
+      // window.open(
+      //   "https://domain/api/v1/user/google",
+      //   "_self"
+      // );
+      window.open("http://localhost:8000/api/v1/user/google", "_self");
+    } catch (error) {
+      toast.error("Sing in Failed", {
+        position: "top-center",
+        autoClose: 5000,
+      });
+    }
   }
 
    useEffect(() => {
@@ -136,8 +253,8 @@ const Login = () => {
             <Input 
             label="Name"
             // placeholder="Enter your email"
-            type="email"
-            {...registerForm2("name", {
+            type="text"
+            {...registerForm2("fullName", {
               required: "Name is required",
               })}
             /> 

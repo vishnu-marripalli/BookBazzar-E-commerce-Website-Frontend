@@ -80,7 +80,7 @@ const Cartproduct = ({book,quantity}) => {
       <div className="md:w-1/2 w-full flex gap-2 ">
         <div className="overflow-hidden p-2">
           <img
-            src={hovered ? book.subImages[0].url : book.mainImage.url}
+            src={hovered ? book.subImages[0]?.url : book.mainImage?.url}
             alt={book.description}
             className="w-[150px]  max-h-[200px] rounded-lg cursor-pointer transition-all duration-500 ease-in-out delay-500 hover:scale-105"
             onMouseEnter={() => setHovered(true)}

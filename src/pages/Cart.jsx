@@ -14,10 +14,10 @@ const Cart =()=> {
     const navigate =useNavigate();
     const dispatch = useDispatch();
     const books = useSelector((state)=> state.cart.cart )
-    const cartTotalprice =useSelector((state)=> state.cart.totalPrice)
-    const  discountedTotal=useSelector((state)=> state.cart.discountedTotalPrice)
+    const cartTotalprice =useSelector((state)=> state.cart?.totalPrice)
+    const  discountedTotal=useSelector((state)=> state.cart?.discountedTotalPrice)
     const cartRef = useRef(null);
-    const cartCount = useSelector((state) => state.cart.cart.length);
+    const cartCount = useSelector((state) => state.cart.cart?.length);
 
     
   useEffect(() => {
