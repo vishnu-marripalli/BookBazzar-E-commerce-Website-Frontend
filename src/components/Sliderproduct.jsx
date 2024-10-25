@@ -24,7 +24,7 @@ const isAuthenticated = useSelector((state)=> state.user.isAuthenticated)
 
   useEffect(() => {
    ApiCall({
-    url:'/api/v1/book/',
+    url:'https://bookbazzar-backend.onrender.com/api/v1/book/',
     method:"GET",
    
    }).then((response)=>{
