@@ -1,11 +1,13 @@
 import axios from "axios";
+const accessToken = localStorage.getItem("accessToken");
 
 const ApiCall = async ({
   url,
   method = "GET",
   params = {},
   data = {},
-  headers = {
+  headers= {
+    Authorization: `Bearer ${accessToken}`,
     "Content-Type": "application/json",
   },
 }) => {

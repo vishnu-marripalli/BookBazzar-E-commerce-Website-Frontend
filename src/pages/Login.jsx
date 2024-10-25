@@ -115,7 +115,7 @@ const Login = () => {
           method:"GET"
         })
         console.log(wishlistResponse.data)
-        const bookIds = wishlistResponse.data.data.Books;
+        const bookIds = wishlistResponse.data?.data.Books;
         dispatch(setWishlist(bookIds));
         setIsLoading(false);
         navigate('/')
