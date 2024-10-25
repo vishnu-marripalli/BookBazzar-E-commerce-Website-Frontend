@@ -10,6 +10,7 @@ import Sliderproduct from '../components/Sliderproduct'
 import { IoIosStar } from "react-icons/io";
 import { FaBookOpen } from "react-icons/fa6";
 import Truck from '../assests/Truck.svg'
+import { useSelector } from 'react-redux'
 gsap.registerPlugin(ScrollTrigger);
 
 const Home =()=>{
@@ -17,8 +18,9 @@ const Home =()=>{
   const [currentSlide, setCurrentSlide] = useState(0);
   const Homebanner =useRef(null)
   const navigate =useNavigate()
+  const isAuthenticated = useSelector((state)=> state.user.isAuthenticated)
 
-  const isAuthenticated = false;
+
 
   useEffect(() => {
     window.scrollTo(0, 0);

@@ -62,8 +62,8 @@ const Summaryproduct = ({book,quantity}) => {
               {book.author}
               </h2>
               <div className="flex items-center">
-                  {renderStars(book.rating.averageRating)}
-                  <span className="ml-2 text-xs text-gray-600">({book.rating.totalReviews})</span>
+                  {renderStars(book.rating?.averageRating)}
+                  <span className="ml-2 text-xs text-gray-600">({book.rating?.totalReviews})</span>
               </div>
               <h3 className="sm:text-sm  text-base">
                 Rs. {book.price}×{ourquantity}

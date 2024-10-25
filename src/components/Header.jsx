@@ -23,11 +23,14 @@ import Drawer from './Drawer';
 
 import ApiCall from '../lib/ApiCall'
 import { logout } from '../features/auth'
+import { initCart } from '../features/cart';
+import { initWishlist } from '../features/Wishlist';
 
 function Header(){
   const [isFixed,setisFixed] =useState(false)
 
   const hamburger = useSelector((state)=> state.features.hamburger)
+  const cartCount = useSelector((state) => state.cart.cart?.length);
 
 
   const isAuthenticated = useSelector((state)=> state.user.isAuthenticated)
@@ -47,6 +50,8 @@ function Header(){
       .then((response) => {
         if (response.data) {
           dispatch(logout());
+          dispatch(initCart());
+          dispatch(initWishlist());
          
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
@@ -191,7 +196,7 @@ function Header(){
 
                               }}}
                             ><IconButton aria-label="cart">
-                            <StyledBadge badgeContent={3} color="primary">
+                            <StyledBadge badgeContent={cartCount} color="primary">
                             <img src={Cart}
                               className=' hover:scale-110'
                               alt="Cart"

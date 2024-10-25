@@ -119,7 +119,7 @@ export default function Footer() {
           </h3>
           <h2 className="sm:text-sm text-[9px] text-center ">
             Copyright © 2024 by Group Book Bazzer. All rights reserved Privacy
-            Policy Legal Use Do not sell my personal information
+            Policy Legal Use  Do not sell my personal information
           </h2>
         </div>
       </div>

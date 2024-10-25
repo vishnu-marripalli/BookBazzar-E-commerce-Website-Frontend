@@ -16,7 +16,7 @@ import SearchBar from './ui/SearchBar';
 export default function Drawer() {
 
     const draweref = useRef(null)
-    const isAuthenticated = true
+    const isAuthenticated = useSelector((state)=> state.user.isAuthenticated)
 
 
     const dispatch = useDispatch()
@@ -90,15 +90,15 @@ export default function Drawer() {
                 <li>
                     <div className=" border-b-2 border-voilet-100 px-5 py-3 font-medium text-[15px]" >
                     <Link
-                    to='/'
+                    to='/sellyourbooks'
                     onClick={()=>{
                         
                         if(!isAuthenticated){
                             toast('Please Login to Sell Your Books ')
-                            // navigate('/login')
+                            navigate('/login')
 
                           }
-                        //   Hamburger();
+                          Hamburger();
                     }}>
                     Sell your books
                     </Link>

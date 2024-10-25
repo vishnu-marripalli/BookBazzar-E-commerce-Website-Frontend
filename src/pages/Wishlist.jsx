@@ -1,13 +1,55 @@
 
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { useSelector } from 'react-redux';
 import Pagebanner from '../components/Pagebanner'
 import ProductCard from '../components/Productcard';
 import { TailSpin } from 'react-loader-spinner';
+import ApiCall from '../lib/ApiCall';
 
 const Wishlist = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const books = useSelector((state)=>(state.features.books))
+  
+
+    const productIds = useSelector((state) => state.wishlist.books);
+  const [books, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const productPromises = productIds.map(async (bookId) => {
+          const response = await ApiCall({
+            url: `/api/v1/book/${bookId}`,
+            method: "GET",
+          });
+          return {
+            ...response.data.data,
+            wishlist: true,
+          };
+        });
+
+        // Wait for all product promises to resolve
+
+        setProducts(await Promise.all(productPromises));
+        setIsLoading(false);
+        // Now you have all products, you can proceed with further processing
+      } catch (err) {
+        console.log("error is ; ",err)
+        setIsLoading(false);
+      }
+    };
+
+    // Call the fetchProducts function
+    fetchProducts();
+  }, [productIds]);
+
+
+
+
+
+
+
+
+
 
   return (
     <div>

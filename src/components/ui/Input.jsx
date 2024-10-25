@@ -6,6 +6,10 @@ import React,{useId,useState} from 'react'
   onChange,
   placeholder = "",
   isRequired = true,
+  disabled = false,
+  error = '',
+  success = false,
+  className = '',
   ...props
  },ref){
   const [showPassword, setShowPassword] = useState(false);
@@ -22,7 +26,26 @@ import React,{useId,useState} from 'react'
   const inputType =
     type === "password" ? (showPassword ? "text" : "password") : type;
     const id = useId()
-
+    const inputClasses = `
+    w-full 
+    px-4 
+    py-2.5
+    border 
+    rounded-lg 
+    outline-none 
+    transition-all 
+    duration-200
+    focus:ring-2
+    focus:ring-offset-1
+    ${disabled ? 'bg-gray-50 cursor-not-allowed' : 'bg-white'}
+    ${error 
+      ? 'border-red-300 focus:border-red-500 focus:ring-red-200' 
+      : success
+      ? 'border-green-300 focus:border-green-500 focus:ring-green-200'
+      : 'border-gray-300 focus:border-blue-500 focus:ring-blue-200'
+    }
+    ${className}
+  `;
   return (
     <>
       <div className="w-full my-1 sm:mt-5 mt-2 relative">
@@ -72,6 +95,12 @@ import React,{useId,useState} from 'react'
             </button>
           )}
         </div>
+         {/* Helper text / Error message */}
+      {(error) && (
+        <div className={`mt-1.5 text-sm ${error ? 'text-red-500' : 'text-gray-500'}`}>
+          {error }
+        </div>
+      )}
       </div>
     </>
   );

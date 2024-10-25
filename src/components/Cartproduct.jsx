@@ -7,17 +7,19 @@ import { useDispatch } from "react-redux";
 import { setCart } from "../features/cart";
 import { toast } from "sonner";
 import { Toaster } from "../components/ui/Sonner";
+import ApiCall from "../lib/ApiCall";
 
 
 
 
 const Cartproduct = ({book,quantity}) => {
-    console.log(book)
-    const naviagate = useNavigate();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [ourquantity, setQuantity] = useState(quantity);
     const [hovered, setHovered] = useState(false);
     const [total, setTotal] = useState(quantity * book.price);
+    const [isLoading, setIsLoading] = useState(false);
+
   
     const itemRef = useRef(null);
     useEffect(() => {
@@ -42,35 +44,77 @@ const Cartproduct = ({book,quantity}) => {
         return stars;
       };
     const itemRemoveHandler = async () => {
-        // await ApiCall({
-        //   url: `/api/v1/cart/item/${product._id}`,
-        //   method: "DELETE",
-        // })
-        //   .then((response) => {
-        //     if (response.data) {
-        //       dispatch(
-        //         setCart({
-        //           cart: [...response.data.data.items],
-        //           totalPrice: response.data.data.cartTotal,
-        //           discountedTotalPrice: response.data.data.discountedTotal,
-        //         })
-        //       );
-        //       toast.error("Item removed successfully");
-        //     } else {
-        //       toast.error("Somthing went wrong");
-        //     }
-        //   })
-        //   .catch(() => {
-        //     dispatch(
-        //       setCart({
-        //         cart: [],
-        //         totalPrice: 0,
-        //         discountedTotalPrice: 0,
-        //       })
-        //     );
-        //   });
+        await ApiCall({
+          url: `/api/v1/cart/item/${book._id}`,
+          method: "DELETE",
+        })
+          .then((response) => {
+            if (response.data) {
+              dispatch(
+                setCart({
+                  cart: [...response.data.data.items],
+                  totalPrice: response.data.data.cartTotal,
+                  discountedTotalPrice: response.data.data.discountedTotal,
+                })
+              );
+              toast.error("Item removed successfully");
+            } else {
+              toast.error("Something went wrong");
+            }
+          })
+          .catch(() => {
+            dispatch(
+              setCart({
+                cart: [],
+                totalPrice: 0,
+                discountedTotalPrice: 0,
+              })
+            );
+          });
       };  
 
+     useEffect(() => {
+      // eslint-disable-next-line no-unused-expressions
+      (async ()=>{
+        setIsLoading(true);
+        await ApiCall({
+          url: `/api/v1/cart/item/${book._id}`,
+          method: "POST",
+          data:{
+            quantity: ourquantity,
+
+          }
+        })
+          .then((response) => {
+            setIsLoading(false);
+            if (response.data) {
+              dispatch(
+                setCart({
+                  cart: [...response.data.data.items],
+                  totalPrice: response.data.data.cartTotal,
+                  discountedTotalPrice: response.data.data.discountedTotal,
+                })
+              );
+            }
+            if (response.error) {
+              setIsLoading(false);
+              toast.error(response.error.data.message);
+            }
+          })
+          .catch(() => {
+            setIsLoading(false);
+            dispatch(
+              setCart({
+                cart: [],
+                totalPrice: 0,
+                discountedTotalPrice: 0,
+              })
+            );;
+          });
+      })()
+     },[ourquantity] )
+     
+      
 
   return (
     <>
@@ -86,7 +130,7 @@ const Cartproduct = ({book,quantity}) => {
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             onClick={() => {
-              naviagate(`/book/${book.title}/${book._id}`);
+              navigate(`/book/${book.title}/${book._id}`);
             }}
             loading="lazy"
           />
@@ -98,8 +142,8 @@ const Cartproduct = ({book,quantity}) => {
                 {book.author}
                 </h2>
                 <div className="flex items-center">
-                    {renderStars(book.rating.averageRating)}
-                    <span className="ml-2 text-xs text-gray-600">({book.rating.totalReviews} reviews)</span>
+                    {renderStars(book.rating?.averageRating)}
+                    <span className="ml-2 text-xs text-gray-600">({book.rating?.totalReviews} reviews)</span>
                 </div>
             </div>
           <h3 className="sm:text-sm md:hidden block font-semibold text-base">

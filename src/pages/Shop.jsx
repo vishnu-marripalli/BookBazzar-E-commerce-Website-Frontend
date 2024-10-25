@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import { useSelector } from 'react-redux';
 import Pagebanner from '../components/Pagebanner'
 import ProductCard from '../components/Productcard';
@@ -12,13 +12,59 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "../components/ui/dropdown-menu";
+import ApiCall from '../lib/ApiCall';
   
  function Shop() {
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [page, setPage] = useState(1);
-    const [sortType, setSortType] = React.useState("newest");
+    const [hasnxtpage, sethasnxtpage] = useState(false);
+    const [sortType, setSortType] = useState("newest");
+    const [books, setbooks] = useState([])
     //handle sort and filter api using useeffect
-    const books = useSelector((state)=>(state.features.books))
+    // const books = useSelector((state)=>(state.features.books))
+    const isAuthenticated = useSelector((state)=> state.user.isAuthenticated)
+    const [isWishlist, setIsWishlist] = useState(true);
+
+
+    const wishlistProducts = useSelector(
+      (state) => state.wishlist.books
+    );
+    const onwishlisttoggle =()=>{
+      setIsWishlist((prev)=>!prev)
+    }
+
+    useEffect(() => {
+     ApiCall({
+      url:'/api/v1/book/',
+      method:"GET",
+      params:{
+        limit: 10,
+        page: 1,
+        sortType,
+      }
+     }).then((response)=>{
+      // console.log(response.data)
+      const books =response.data.data.docs
+      sethasnxtpage(response.data.data.hasNextPage)
+      if(!isAuthenticated){
+        setbooks(books)
+        setIsLoading(false);
+      }
+      const updatedProducts = books.map((book) => {
+        const wishlist = Array.isArray(wishlistProducts)
+          ? (wishlistProducts ).includes(book._id)
+          : (wishlistProducts).has(book._id);
+        return {
+          ...book,
+          wishlist,
+        };
+      });
+      setbooks(updatedProducts);
+     })
+     setIsLoading(false);
+
+    }, [sortType,page,isWishlist])
+    
 
   return (
    <>
@@ -68,7 +114,7 @@ import {
               {books.map((book, index) => (
                 <React.Fragment key={book._id + Math.random() * 10}>
                   <div>
-                    <ProductCard book={book} Home={false} />
+                    <ProductCard book={book} Home={false} onwishlisttoggle={onwishlisttoggle} />
                   </div>
                 </React.Fragment>
               ))}
@@ -88,7 +134,7 @@ import {
                 />
               </div>
             )}
-            {!isLoading && (
+            {hasnxtpage && (!isLoading && (
               <div className="text-center mt-4">
                 <button
                   className="border-2 border-primary hover:bg-primary hover:text-white bg-white w-[150px] px-6 py-2 text-sm text-primary rounded-sm my-3 duration-200 ease-in"
@@ -100,7 +146,7 @@ import {
                   Load More
                 </button>
               </div>
-            )}
+            ))}
             
         </div>
    </>

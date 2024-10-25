@@ -25,7 +25,7 @@ const BookCreationForm = () => {
       const response = await axios.post('http://localhost:8000/api/v1/book/create', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${localStorage.getItem('token')}` // Assuming you store the token in localStorage
+          'Authorization': `Bearer${localStorage.getItem('accessToken')}` // Assuming you store the token in localStorage
         }
       });
       console.log('Book created:', response.data);

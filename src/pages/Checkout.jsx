@@ -5,16 +5,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { gsap } from "gsap";
 import { toast } from "sonner";
 import { setCart } from '../features/cart';
-import Cartproduct from '../components/Cartproduct'
+import axios from 'axios';
 import Summaryproduct from '../components/Summaryproduct';
 import Input from '../components/ui/Input';
 import { useForm, SubmitHandler } from "react-hook-form"
+import ApiCall from '../lib/ApiCall';
 const Checkout = () => {
 
     const navigate =useNavigate();
     const dispatch = useDispatch();
-
+    const user =useSelector((state)=> state.user.user )
     const books = useSelector((state)=> state.cart.cart )
+    const cart = useSelector((state)=> state.cart.cart )
     const cartTotalprice =useSelector((state)=> state.cart.totalPrice)
     const  discountedTotal=useSelector((state)=> state.cart.discountedTotalPrice)
     const cartRef = useRef(null);
@@ -40,9 +42,104 @@ const Checkout = () => {
           ease: "power3.out",
         });
       }, [cartCount]);
-      const submit=(data)=>{
-        console.log(data)
-      }
+
+      const verifyPayment = async (paymentData) => {
+        try {
+          const response = await axios.post(
+            `/api/v1/order/verify-payment`,
+            paymentData,
+            { withCredentials: true }
+          );
+          if (response.data.success) {
+            toast.success("Payment successful! Your order is placed");
+            return true;
+          }
+        } catch (error) {
+          console.error("Payment verification failed:", error);
+          toast.error(
+            error.response?.data?.message || "Payment verification failed. Please contact support.",
+            'error'
+          );
+          return false;
+        }
+      };
+    
+
+const handlePayment = async () => {
+const paymentData = await axios.post('/api/v1/order/create-order',{
+  cart:cart,
+  discountedTotalPrice:discountedTotal,
+  totalPrice:cartTotalprice
+});
+const loadScript = (src) => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  };
+  const res = await loadScript(
+    "https://checkout.razorpay.com/v1/checkout.js"
+  );
+const { order_id, amount, currency } = paymentData.data.data
+      
+const options = {
+    key: "rzp_test_smsKR1iWFpPJQw", // Enter the Key ID generated from the Dashboard
+    amount: amount,
+    currency: currency,
+    name: "BookBazzer",
+    description: `Subscription for basic`,
+    order_id: order_id, // Razorpay order ID
+      handler: async function (response) {
+        const verificationSuccess = await verifyPayment({
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_signature: response.razorpay_signature,
+        });
+
+        if (verificationSuccess) {
+         try {
+          ApiCall({
+            url:'/api/v1/cart/clear',
+            method:"DELETE",
+          }).then((response) => {
+            if (response.data) {
+              dispatch(
+                setCart({
+                  cart: [...response.data.data.items],
+                  totalPrice: response.data.data.cartTotal,
+                  discountedTotalPrice: response.data.data.discountedTotal,
+                })
+              );
+            }
+            if (response.error) {
+              toast.error(response.error.data.message);
+            }
+          })
+         } catch (error) {
+          console.log(error)
+         }
+        }
+      },
+    prefill: {
+        name: user.fullName || '',
+        email: user.email || '',
+    },
+    theme: {
+        color: "#937DC2"
+    }
+};
+
+const rzp = new window.Razorpay(options);
+rzp.open();
+};
+    
 
 
   return (
@@ -54,7 +151,7 @@ const Checkout = () => {
             <div className="md:w-3/5 md:py-10 md:px-5 px-2 w-full ">
                 <div className="shadow-lg border p-5 border-gray-200 ">
                     <h1 className="text-[#191C1F] font-bold text-3xl">Shipping Address</h1>
-                    <form onSubmit={handleSubmit(submit)}>
+                    <form onSubmit={handleSubmit(handlePayment)}>
                       <div className=" flex md:flex-row gap-3">  
                           <Input 
                           label="First Name"
@@ -131,8 +228,8 @@ const Checkout = () => {
                         return (
                             <div key={book._id} className="w-full md:flex flex-col items-center sm:my-4 my-2">
                                 <Summaryproduct
-                                book={book}
-                                quantity={2}
+                                book={book.book}
+                                quantity={book.quantity}
                                 />
                             </div>
                             );
@@ -175,7 +272,7 @@ const Checkout = () => {
             </h3>
             <button
               onClick={() => {
-                navigate(-1);
+                navigate('/shop');
               }}
               className="py-2 px-3 border-[2px] border-primary text-sm rounded-sm hover:bg-primary hover:text-white duration-200 ease-in focus:outline-none">
               Continue Shopping

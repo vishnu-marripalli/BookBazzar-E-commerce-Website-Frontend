@@ -28,9 +28,7 @@ export default function Razorpay() {
             "https://checkout.razorpay.com/v1/checkout.js"
           );
         const { order_id, amount, currency } = paymentData.data.data
-          console.log(amount)
-          
-    
+              
         const options = {
             key: "rzp_test_smsKR1iWFpPJQw", // Enter the Key ID generated from the Dashboard
             amount: amount,

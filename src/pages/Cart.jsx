@@ -31,7 +31,7 @@ const Cart =()=> {
   }, [cartCount]);
 
   const discountHandler = () => {
-    if (discountCode.length < 4) {
+    if (discountCode.length ) {
       toast.error("Please enter a valid discount code");
       return;
     }
@@ -86,15 +86,15 @@ const Cart =()=> {
                         return (
                             <div key={book._id} className="w-full md:flex flex-col items-center sm:my-4 my-2">
                                 <Cartproduct
-                                book={book}
-                                quantity={2}
+                                book={book.book}
+                                quantity={book.quantity}
                                 />
                             </div>
                             );
                     })}
                 </div>
             </div>
-            <div className="md:w-2/5 flex flex-col items-center gap-6 h-full px-2 py-10">
+            <div ref={cartRef} className="md:w-2/5 flex flex-col items-center gap-6 h-full px-2 py-10">
                 <div className="shadow-lg border flex flex-col gap-4 justify-between border-gray-200 w-full md:w-[70%] p-4 h-[70%]">
                 <h2 className="sm:text-2xl text-[#382C2C] font-bold text-xl">Cart Totals</h2>
                 <div className="flex flex-col md:gap-2">
@@ -150,7 +150,7 @@ const Cart =()=> {
             </h3>
             <button
               onClick={() => {
-                navigate(-1);
+                navigate('/shop');
               }}
               className="py-2 px-3 border-[2px] border-primary text-sm rounded-sm hover:bg-primary hover:text-white duration-200 ease-in focus:outline-none">
               Continue Shopping

@@ -17,6 +17,7 @@ import VerifyEmail from "./pages/Verifyemail";
 import { useSelector } from "react-redux";
 import Redirect from "./pages/Redirect";
 import State from "./components/State";
+import Profile from "./pages/Profile";
 
 
 
@@ -49,6 +50,9 @@ function App() {
 
 
       <Route path="/cart" element={<AuthRoute element={<Cart />}/>} />
+
+      <Route path="/user" element={<AuthRoute element={<Profile />}/>} />
+
       <Route path="/checkout" element={<AuthRoute element={<Checkout />}/>} />
       <Route path="/wishlist" element={<AuthRoute element={<Wishlist />}/>} />
       <Route path="/sellyourbooks" element={<AuthRoute element={<BookCreationForm />}/>}/>

@@ -10,6 +10,8 @@ import ApiCall from '../lib/ApiCall'
 import { useDispatch } from 'react-redux'
 import { register,login,loginFailed } from '../features/auth'
 import { toast } from 'sonner'
+import { setCart } from '../features/cart'
+import { setWishlist } from '../features/Wishlist'
 
 const Login = () => {
   const [page, setPage] = useState('Signin')
@@ -97,6 +99,25 @@ const Login = () => {
         };
 
         dispatch(login(loginPayload));
+        const cartResponse = await ApiCall({
+          url:'/api/v1/cart/',
+          method:"GET"
+        })
+        console.log(cartResponse.data)
+        dispatch(setCart({
+          cart:[...cartResponse.data.data.items],
+          totalPrice:cartResponse.data.data?.cartTotal,
+          discountedTotalPrice: cartResponse.data.data.discountedTotal,
+        }
+        ))
+
+        const wishlistResponse = await ApiCall({
+          url:'/api/v1/wishlist/',
+          method:"GET"
+        })
+        console.log(wishlistResponse.data)
+        const bookIds = wishlistResponse.data.data.Books;
+        dispatch(setWishlist(bookIds));
         setIsLoading(false);
         navigate('/')
       }  

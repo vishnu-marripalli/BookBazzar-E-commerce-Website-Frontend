@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux'
 import Loading from './Loading';
 import { setIsAuthenticated,login } from '../features/auth';
 import ApiCall from '../lib/ApiCall';
+import { setCart } from '../features/cart';
+import { setWishlist } from '../features/Wishlist';
 
 
 
@@ -55,8 +57,26 @@ const State = () => {
          
                  dispatch(login(loginPayload));
                  // add cart
-
-
+                 const cartResponse =await ApiCall({
+                  url:'/api/v1/cart/',
+                  method:"GET"
+                })
+                dispatch(setCart({
+                  cart:[...cartResponse.data.data.items],
+                  totalPrice:cartResponse.data.data?.cartTotal,
+                  discountedTotalPrice: cartResponse.data.data.discountedTotal,
+                }
+                ))
+        
+                const wishlistResponse =await ApiCall({
+                  url:'/api/v1/wishlist/',
+                  method:"GET"
+                })
+                console.log(wishlistResponse)
+                const bookIds = wishlistResponse.data.data.Books;
+                console.log(bookIds)
+                dispatch(setWishlist(bookIds));
+      
 
                  setIsLoading(false);
              }else if (response.error) {

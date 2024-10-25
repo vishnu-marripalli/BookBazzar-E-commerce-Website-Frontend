@@ -12,11 +12,12 @@ import { setCart,initCart } from "../features/cart";
 
 import gsap from 'gsap';
 import { toast } from 'sonner';
+import ApiCall from '../lib/ApiCall';
 
 const Product =()=> {
 
     const {bookid} = useParams();
-    const [Quantity,setQuantity]=useState(0);
+    const [Quantity,setQuantity]=useState(1);
     const [isLoading, setIsLoading] = useState(false);
     const [book,setbook]=useState({
         _id: "",
@@ -59,7 +60,6 @@ const Product =()=> {
     const subImagesContainerRef =useRef(null)
    
     const books = useSelector((state)=>(state.features.books))
-
     const handleSubImageClick = (image) => {
         // Slide animation
         
@@ -79,91 +79,74 @@ const Product =()=> {
       };
 
     useEffect(() => {
-        // ApiCall({
-        //   url: `/api/v1/product/${productId}`,
-        //   method: "GET",
-        // })
-        //   .then((res) => {
-        //     setProduct(res.data.data);
-        //     setSize(res.data.data.size[0]);
-        //     setSubImages([...res.data.data.subImages]);
-        //     setMainImage(res.data.data.mainImage);
-        //   })
-        //   .catch(() => {
-        //     navigate("/404");
-        //   });
-        const data =books.find((book)=>book._id===bookid)
-        setbook(data)
-        setMainImage(data.mainImage)
-        setSubImages([...data.subImages])
+        ApiCall({
+          url: `/api/v1/book/${bookid}`,
+          method: "GET",
+        })
+          .then((res) => {
+            console.log(res)
+            setbook(res.data.data);
+            setSubImages([...res.data.data.subImages]);
+            setMainImage(res.data.data.mainImage);
+          })
+          .catch(() => {
+            navigate("/404");
+          });
         
 
       }, [bookid,books]);
 
 
-      const AddToCartHandler =  () => {
+      const AddToCartHandler = async ( )=>{
         setIsLoading(true);
-       
-        dispatch(
-                  setCart({
-                    cart: [book],
-                    totalPrice: book.price,
-                    discountedTotalPrice: 500,
-                  }))
-                  toast("Product added to cart successfully ", {
-                    description: `${book.title},  ${book.price}`,
-                    action: {
-                      label: "Go to Cart",
-                      onClick: () => {
-                        navigate("/cart");
-                      },
-                    },
-                  });
-        // await ApiCall({
-        //   url: `/api/v1/cart/item/${productId}`,
-        //   method: "POST",
-        //   data: {
-        //     quantity: quantity,
-        //   },
-        // })
-        //   .then((response) => {
-        //     setIsLoading(false);
-        //     if (response.data) {
-        //       dispatch(
-        //         setCart({
-        //           cart: [...response.data.data.items],
-        //           totalPrice: response.data.data.cartTotal,
-        //           discountedTotalPrice: response.data.data.discountedTotal,
-        //         })
-        //       );
-        //       toast("Product added to cart successfully ", {
-        //         description: `${product.name}, ${product.description}, ${product.price}`,
-        //         action: {
-        //           label: "Go to Cart",
-        //           onClick: () => {
-        //             navigate("/cart");
-        //           },
-        //         },
-        //       });
-        //     }
-        //     if (response.error) {
-        //       setIsLoading(false);
-        //       toast("Before adding the product to your cart, please login.", {
-        //         action: {
-        //           label: "Login",
-        //           onClick: () => {
-        //             navigate("/login");
-        //           },
-        //         },
-        //       });
-        //     }
-        //   })
-        //   .catch(() => {
-        //     setIsLoading(false);
-        //     toast.error(`${product.name} has already been in cart`);
-        //   });
-      };
+        await ApiCall({
+          url: `/api/v1/cart/item/${book._id}`,
+          method: "POST",
+          data:{
+            quantity: Quantity,
 
+          }
+          
+        })
+          .then((response) => {
+            setIsLoading(false);
+            if (response.data) {
+              dispatch(
+                setCart({
+                  cart: [...response.data.data.items],
+                  totalPrice: response.data.data.cartTotal,
+                  discountedTotalPrice: response.data.data.discountedTotal,
+                })
+              );
+              toast("Product added to cart successfully ", {
+                description: `${book.title}, ${book.description}, ${book.price}`,
+                action: {
+                  label: "Go to Cart",
+                  onClick: () => {
+                    navigate("/cart");
+                  },
+                },
+              });
+            }
+            if (response.error) {
+              setIsLoading(false);
+              toast("Before adding the product to your cart, please login.", {
+                action: {
+                  label: "Login",
+                  onClick: () => {
+                    navigate("/login");
+                  },
+                },
+              });
+            }
+          })
+          .catch(() => {
+            setIsLoading(false);
+            toast.error(`${book.title} has already been in cart`);
+          });
+        }
+
+   
   return (
     <>
     <Pagebanner title={book.title}/>
@@ -172,7 +155,7 @@ const Product =()=> {
             <div className="md:w-[50%] w-full overflow-hidden flex md:flex-row flex-col-reverse items-center sm:items-start gap-2">
                 <div 
                 ref={subImagesContainerRef}
-                className='flex flex-col gap-1 w-1/5'>
+                className='flex md:flex-col flex-row overflow-hidden  gap-1 md:w-1/5'>
                     {subImages.map((image, index) => (
                     <div className="max-w-[200px] max-h-[250px] shadow-lg border flex items-center justify-center sm:p-4 p-1 border-gray-200"> 
                         <img
@@ -200,8 +183,8 @@ const Product =()=> {
                 <h1 className='text-3xl  text-[#382C2C] font-semibold'>{book.title}</h1>
                 <span className='sm:text-base text-[#4F4C57] '>{book.author}</span>
                 <div className="flex items-center">
-                {renderStars(book.rating.averageRating)}
-                <span className="ml-2 text-xs text-gray-600">({book.rating.totalReviews} reviews)</span>
+                {renderStars(book.rating?.averageRating)}
+                <span className="ml-2 text-xs text-gray-600">({book.rating?.totalReviews} reviews)</span>
                 </div>
                 <h1 className="text-[#231F2D] text-2xl  font-bold">Rs. {book.price}</h1>
                 <p className="text-[#4F4C57]">{book.description}</p>

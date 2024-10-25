@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { Skeleton } from './ui/skeleton';
 import Slider from 'react-slick';
+import ApiCall from '../lib/ApiCall';
 gsap.registerPlugin(ScrollTrigger);
 
 
@@ -12,10 +13,40 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Sliderproduct =({title, category})=> {
 
-const UncategorizedBooks = useSelector((state)=>(state.features.books))
+// const UncategorizedBooks = useSelector((state)=>(state.features.books))
+const isAuthenticated = useSelector((state)=> state.user.isAuthenticated)
 
   const [books,setbooks]=useState([]);
-  
+  const [UncategorizedBooks, setUncategorizedBooks] = useState([])
+  const wishlistProducts = useSelector(
+    (state) => state.wishlist.books
+  );
+
+  useEffect(() => {
+   ApiCall({
+    url:'/api/v1/book/',
+    method:"GET",
+   
+   }).then((response)=>{
+    const books =response.data.data.docs
+    if(!isAuthenticated){
+      setUncategorizedBooks(books)
+      setIsLoading(false);
+    }
+    const updatedProducts = books.map((book) => {
+      const wishlist = Array.isArray(wishlistProducts)
+        ? (wishlistProducts ).includes(book._id)
+        : (wishlistProducts).has(book._id);
+      return {
+        ...book,
+        wishlist,
+      };
+    });
+    setUncategorizedBooks(updatedProducts);
+   })
+   setIsLoading(false);
+
+  }, [])
 
       const [isLoading, setIsLoading] = useState(false);
 
@@ -106,12 +137,11 @@ const UncategorizedBooks = useSelector((state)=>(state.features.books))
         };
       
         const trendingThresholdDate = daysAgo(100); // Books created within the last 30 days are trending
-        const mostRatedThreshold = 4.5; // Books with an average rating of 4.5 or higher are most rated
+        const mostRatedThreshold = 0; // Books with an average rating of 4.5 or higher are most rated
       
         UncategorizedBooks.forEach((book) => {
-          const createdAtDate = new Date(book.createdAt);
-          
-          if (book.rating.averageRating >= mostRatedThreshold) {
+          const createdAtDate = new Date(book.publishedDate);
+          if (book.rating?.averageRating >= mostRatedThreshold) {
             categories.mostRated.push(book);
           }
       
@@ -120,7 +150,7 @@ const UncategorizedBooks = useSelector((state)=>(state.features.books))
           }
       
           // Add books to the 'other' category if they don't fall into most rated or trending
-          if (book.rating.averageRating < mostRatedThreshold && createdAtDate < trendingThresholdDate) {
+          if (book.rating?.averageRating < mostRatedThreshold && createdAtDate < trendingThresholdDate) {
             categories.other.push(book);
           }
         });
@@ -167,7 +197,7 @@ const UncategorizedBooks = useSelector((state)=>(state.features.books))
         return () => {
           
         }
-      }, [])
+      }, [UncategorizedBooks])
       
 
 

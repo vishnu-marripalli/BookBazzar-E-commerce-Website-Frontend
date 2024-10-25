@@ -58,10 +58,14 @@ const userReducer = createSlice({
       setIsAuthenticated(state, action) {
       state.isAuthenticated = action.payload;
       },
+      setUser(state,action){
+        state.user.fullName=action.payload.fullName;
+        state.user.email=action.payload.email
+      }
     }
 
 })
 
 
-export const { register, setIsAuthenticated,login,loginFailed,logout } = userReducer.actions;
+export const { register, setIsAuthenticated,login,loginFailed,logout,setUser } = userReducer.actions;
 export default userReducer.reducer;
