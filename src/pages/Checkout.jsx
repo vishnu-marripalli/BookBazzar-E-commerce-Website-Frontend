@@ -45,11 +45,10 @@ const Checkout = () => {
 
       const verifyPayment = async (paymentData) => {
         try {
-          const response = await axios.post(
-            `https://bookbazzar-backend.onrender.com/api/v1/order/verify-payment`,
-            paymentData,
-            { withCredentials: true }
-          );
+          const response = await ApiCall(
+          {  url:`https://bookbazzar-backend.onrender.com/api/v1/order/verify-payment`,
+            data:paymentData,
+        }  );
           if (response.data.success) {
             toast.success("Payment successful! Your order is placed");
             return true;
@@ -66,11 +65,13 @@ const Checkout = () => {
     
 
 const handlePayment = async () => {
-const paymentData = await axios.post('https://bookbazzar-backend.onrender.com/api/v1/order/create-order',{
+const paymentData = await ApiCall({
+  url:'https://bookbazzar-backend.onrender.com/api/v1/order/create-order',
+  data:{
   cart:cart,
   discountedTotalPrice:discountedTotal,
   totalPrice:cartTotalprice
-});
+}});
 const loadScript = (src) => {
     return new Promise((resolve) => {
       const script = document.createElement("script");
