@@ -10,6 +10,10 @@ import { Toaster } from 'sonner';
 import {gsap} from 'gsap'
 import { toggleHamburger } from '../features/features';
 import SearchBar from './ui/SearchBar';
+import ApiCall from '../lib/ApiCall';
+import { logout } from '../features/auth';
+import { initCart } from '../features/cart';
+import { initWishlist } from '../features/Wishlist';
 
 
 
@@ -27,7 +31,29 @@ export default function Drawer() {
 
         dispatch(toggleHamburger())
     }
-
+    const logouthandler=()=>{
+        ApiCall({
+          url: "https://bookbazzar-backend.onrender.com/api/v1/user/logout",
+          method: "GET",
+          
+        })
+          .then((response) => {
+            if (response.data) {
+              dispatch(logout());
+              dispatch(initCart());
+              dispatch(initWishlist());
+             
+              localStorage.removeItem("accessToken");
+              localStorage.removeItem("refreshToken");
+              navigate("/login");
+            } else {
+              toast.error("Error while logging out");
+            }
+          })
+          .catch(() => {
+            toast.error("Error while logging out");
+          });
+      }
     useEffect(() => {
      function handleresize(){
         if(window.innerWidth > 768){
@@ -149,10 +175,10 @@ export default function Drawer() {
                 {isAuthenticated  ?
                 (  <div className=" border-t-2 border-voilet-100 px-5 py-5 font-medium text-[15px]" >
                     <Link
-                    to='/logout'
                     className='flex  items-center gap-4'
                     onClick={()=>{
                         Hamburger();
+                        logouthandler();
                     }}>
                         <img src={SignOut}
                             className=' '

@@ -43,9 +43,7 @@ function Header(){
     ApiCall({
       url: "https://bookbazzar-backend.onrender.com/api/v1/user/logout",
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      
     })
       .then((response) => {
         if (response.data) {
