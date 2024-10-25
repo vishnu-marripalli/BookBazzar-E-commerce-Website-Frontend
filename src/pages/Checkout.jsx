@@ -46,7 +46,7 @@ const Checkout = () => {
       const verifyPayment = async (paymentData) => {
         try {
           const response = await axios.post(
-            `/api/v1/order/verify-payment`,
+            `https://bookbazzar-backend.onrender.com/api/v1/order/verify-payment`,
             paymentData,
             { withCredentials: true }
           );
@@ -66,7 +66,7 @@ const Checkout = () => {
     
 
 const handlePayment = async () => {
-const paymentData = await axios.post('/api/v1/order/create-order',{
+const paymentData = await axios.post('https://bookbazzar-backend.onrender.com/api/v1/order/create-order',{
   cart:cart,
   discountedTotalPrice:discountedTotal,
   totalPrice:cartTotalprice
@@ -106,7 +106,7 @@ const options = {
         if (verificationSuccess) {
          try {
           ApiCall({
-            url:'/api/v1/cart/clear',
+            url:'https://bookbazzar-backend.onrender.com/api/v1/cart/clear',
             method:"DELETE",
           }).then((response) => {
             if (response.data) {

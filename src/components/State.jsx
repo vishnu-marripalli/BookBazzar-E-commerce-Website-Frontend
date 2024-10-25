@@ -26,7 +26,7 @@ const State = () => {
             }
            try {
              const response = await ApiCall({
-                 url: "/api/v1/user/self",
+                 url: "https://bookbazzar-backend.onrender.com/api/v1/user/self",
                  method: "GET",
                  data: {},
                  headers: {
@@ -58,7 +58,7 @@ const State = () => {
                  dispatch(login(loginPayload));
                  // add cart
                  const cartResponse =await ApiCall({
-                  url:'/api/v1/cart/',
+                  url:'https://bookbazzar-backend.onrender.com/api/v1/cart/',
                   method:"GET"
                 })
                 dispatch(setCart({
@@ -69,7 +69,7 @@ const State = () => {
                 ))
         
                 const wishlistResponse =await ApiCall({
-                  url:'/api/v1/wishlist/',
+                  url:'https://bookbazzar-backend.onrender.com/api/v1/wishlist/',
                   method:"GET"
                 })
                 console.log(wishlistResponse)

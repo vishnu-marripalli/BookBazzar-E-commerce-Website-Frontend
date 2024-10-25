@@ -26,7 +26,7 @@ const Profile = () => {
     const fetchOrderDetails = async () => {
       try {
         const res = await ApiCall({
-          url: '/api/v1/order/orderdetails',
+          url: 'https://bookbazzar-backend.onrender.com/api/v1/order/orderdetails',
           method: 'POST',
           data: { role: 'User' },
         });
@@ -139,7 +139,7 @@ console.log(data)
     if (Object.keys(newErrors).length === 0) {
       setIsSaving(true);
       try {
-        const response = await fetch('/api/v1/user/self', {
+        const response = await fetch('https://bookbazzar-backend.onrender.com/api/v1/user/self', {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

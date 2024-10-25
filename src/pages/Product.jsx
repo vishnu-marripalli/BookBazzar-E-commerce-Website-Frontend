@@ -80,7 +80,7 @@ const Product =()=> {
 
     useEffect(() => {
         ApiCall({
-          url: `/api/v1/book/${bookid}`,
+          url: `https://bookbazzar-backend.onrender.com/api/v1/book/${bookid}`,
           method: "GET",
         })
           .then((res) => {
@@ -100,7 +100,7 @@ const Product =()=> {
       const AddToCartHandler = async ( )=>{
         setIsLoading(true);
         await ApiCall({
-          url: `/api/v1/cart/item/${book._id}`,
+          url: `https://bookbazzar-backend.onrender.com/api/v1/cart/item/${book._id}`,
           method: "POST",
           data:{
             quantity: Quantity,

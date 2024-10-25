@@ -35,7 +35,7 @@ import ApiCall from '../lib/ApiCall';
 
     useEffect(() => {
      ApiCall({
-      url:'/api/v1/book/',
+      url:'https://bookbazzar-backend.onrender.com/api/v1/book/',
       method:"GET",
       params:{
         limit: 10,

@@ -36,7 +36,7 @@ const Cart =()=> {
       return;
     }
     // ApiCall({
-    //   url: "/api/v1/coupon/c/apply",
+    //   url: "https://bookbazzar-backend.onrender.com/api/v1/coupon/c/apply",
     //   method: "POST",
     //   data: {
     //     couponCode: discountCode,

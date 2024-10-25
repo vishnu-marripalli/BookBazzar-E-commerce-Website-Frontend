@@ -18,7 +18,7 @@ const Wishlist = () => {
       try {
         const productPromises = productIds.map(async (bookId) => {
           const response = await ApiCall({
-            url: `/api/v1/book/${bookId}`,
+            url: `https://bookbazzar-backend.onrender.com/api/v1/book/${bookId}`,
             method: "GET",
           });
           return {

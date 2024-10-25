@@ -36,7 +36,7 @@ const ProductCard = ({book,Home,onwishlisttoggle})=> {
     const AddToCartHandler = async ( )=>{
     setIsLoading(true);
     await ApiCall({
-      url: `/api/v1/cart/item/${book._id}`,
+      url: `https://bookbazzar-backend.onrender.com/api/v1/cart/item/${book._id}`,
       method: "POST",
       
     })
@@ -86,7 +86,7 @@ const ProductCard = ({book,Home,onwishlisttoggle})=> {
         const method = isWishlist ? "DELETE" : "POST";
         try {
           const response = await ApiCall({
-            url: `/api/v1/wishlist/${book._id}`,
+            url: `https://bookbazzar-backend.onrender.com/api/v1/wishlist/${book._id}`,
             method,
           });
           if (response.data) {

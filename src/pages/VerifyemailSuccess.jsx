@@ -17,7 +17,7 @@ const VerifyEmailSuccess = () => {
       try {
         setIsLoading(true);
         const response = await ApiCall({
-          url: `/api/v1/user/verify-email/${token}`,
+          url: `https://bookbazzar-backend.onrender.com/api/v1/user/verify-email/${token}`,
           method: "GET",
         });
         setIsLoading(false);

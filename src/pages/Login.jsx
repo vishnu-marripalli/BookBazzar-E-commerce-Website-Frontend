@@ -66,7 +66,7 @@ const Login = () => {
     try {
       setIsLoading(true);
       const response = await ApiCall({
-        url: "/api/v1/user/login",
+        url: "https://bookbazzar-backend.onrender.com/api/v1/user/login",
         method: "POST",
         data: data
       });
@@ -100,7 +100,7 @@ const Login = () => {
 
         dispatch(login(loginPayload));
         const cartResponse = await ApiCall({
-          url:'/api/v1/cart/',
+          url:'https://bookbazzar-backend.onrender.com/api/v1/cart/',
           method:"GET"
         })
         console.log(cartResponse.data)
@@ -112,7 +112,7 @@ const Login = () => {
         ))
 
         const wishlistResponse = await ApiCall({
-          url:'/api/v1/wishlist/',
+          url:'https://bookbazzar-backend.onrender.com/api/v1/wishlist/',
           method:"GET"
         })
         console.log(wishlistResponse.data)
@@ -170,7 +170,7 @@ const Login = () => {
     try {
       setIsLoading(true)
      const response= await ApiCall({
-        url:'/api/v1/user/register',
+        url:'https://bookbazzar-backend.onrender.com/api/v1/user/register',
         method:"POST",
         data:data,
       })

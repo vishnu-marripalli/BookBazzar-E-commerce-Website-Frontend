@@ -41,7 +41,7 @@ function Header(){
 
   const logouthandler=()=>{
     ApiCall({
-      url: "/api/v1/user/logout",
+      url: "https://bookbazzar-backend.onrender.com/api/v1/user/logout",
       method: "GET",
       headers: {
         "Content-Type": "application/json",

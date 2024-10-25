@@ -22,7 +22,7 @@ const BookCreationForm = () => {
     });
 
     try {
-      const response = await axios.post('/api/v1/book/create', formData, {
+      const response = await axios.post('https://bookbazzar-backend.onrender.com/api/v1/book/create', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer${localStorage.getItem('accessToken')}` // Assuming you store the token in localStorage

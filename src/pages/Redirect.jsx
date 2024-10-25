@@ -25,7 +25,7 @@ const Redirect = () => {
       
         try {
             const response = await ApiCall({
-                url: "/api/v1/user/self",
+                url: "https://bookbazzar-backend.onrender.com/api/v1/user/self",
                 method: "GET",
                 data: {},
                 headers: {

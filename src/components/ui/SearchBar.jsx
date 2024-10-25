@@ -12,7 +12,7 @@ import Search from '../../assests/Search.svg'
 // import AsyncSelect from 'react-select/async';
 
 // const loadOptions = (inputValue, callback) => {
-//   fetch(`/api/books?search=${inputValue}`)
+//   fetch(`https://bookbazzar-backend.onrender.com/api/books?search=${inputValue}`)
 //     .then(response => response.json())
 //     .then(data => {
 //       callback(data.map(book => ({ value: book.id, label: book.title })));

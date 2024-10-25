@@ -45,7 +45,7 @@ const Cartproduct = ({book,quantity}) => {
       };
     const itemRemoveHandler = async () => {
         await ApiCall({
-          url: `/api/v1/cart/item/${book._id}`,
+          url: `https://bookbazzar-backend.onrender.com/api/v1/cart/item/${book._id}`,
           method: "DELETE",
         })
           .then((response) => {
@@ -78,7 +78,7 @@ const Cartproduct = ({book,quantity}) => {
       (async ()=>{
         setIsLoading(true);
         await ApiCall({
-          url: `/api/v1/cart/item/${book._id}`,
+          url: `https://bookbazzar-backend.onrender.com/api/v1/cart/item/${book._id}`,
           method: "POST",
           data:{
             quantity: ourquantity,
