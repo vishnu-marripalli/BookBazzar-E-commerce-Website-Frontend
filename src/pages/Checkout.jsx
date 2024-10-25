@@ -47,6 +47,7 @@ const Checkout = () => {
         try {
           const response = await ApiCall(
           {  url:`https://bookbazzar-backend.onrender.com/api/v1/order/verify-payment`,
+            method:"POST",
             data:paymentData,
         }  );
           if (response.data.success) {
@@ -66,7 +67,9 @@ const Checkout = () => {
 
 const handlePayment = async () => {
 const paymentData = await ApiCall({
-  url:'https://bookbazzar-backend.onrender.com/api/v1/order/create-order',
+  url:"https://bookbazzar-backend.onrender.com/api/v1/order/create-order",
+  // url:"http://localhost:8000/api/v1/order/create-order",
+  method:"POST",
   data:{
   cart:cart,
   discountedTotalPrice:discountedTotal,
