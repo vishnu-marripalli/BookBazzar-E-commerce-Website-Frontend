@@ -66,6 +66,7 @@ const Login = () => {
     try {
       setIsLoading(true);
       const response = await ApiCall({
+        // url: "http://localhost:8000/api/v1/user/login",
         url: "https://bookbazzar-backend.onrender.com/api/v1/user/login",
         method: "POST",
         data: data
@@ -100,6 +101,7 @@ const Login = () => {
 
         dispatch(login(loginPayload));
         const cartResponse = await ApiCall({
+          // url:'http://localhost:8000/api/v1/cart/',
           url:'https://bookbazzar-backend.onrender.com/api/v1/cart/',
           method:"GET"
         })
@@ -111,6 +113,7 @@ const Login = () => {
         ))
 
         const wishlistResponse = await ApiCall({
+          // url:'http://localhost:8000/api/v1/wishlist/',
           url:'https://bookbazzar-backend.onrender.com/api/v1/wishlist/',
           method:"GET"
         })

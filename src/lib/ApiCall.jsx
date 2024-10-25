@@ -1,5 +1,4 @@
 import axios from "axios";
-const accessToken = localStorage.getItem("accessToken");
 
 const ApiCall = async ({
   url,
@@ -7,7 +6,7 @@ const ApiCall = async ({
   params = {},
   data = {},
   headers= {
-    Authorization: `Bearer ${accessToken}`,
+    Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Fetch here for fresh token
     "Content-Type": "application/json",
   },
 }) => {
@@ -24,6 +23,7 @@ const ApiCall = async ({
         params,
         data,
         headers,
+        withCredentials: true,
       });
       response.data = res.data;
     } catch (error) {
