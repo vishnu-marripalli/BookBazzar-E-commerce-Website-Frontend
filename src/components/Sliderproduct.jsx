@@ -28,7 +28,8 @@ const isAuthenticated = useSelector((state)=> state.user.isAuthenticated)
     method:"GET",
    
    }).then((response)=>{
-    const books =response.data.data.docs
+    console.log(response.data)
+    const books =response.data.docs
     if(!isAuthenticated){
       setUncategorizedBooks(books)
       setIsLoading(false);
