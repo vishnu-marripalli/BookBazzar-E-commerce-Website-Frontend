@@ -103,11 +103,10 @@ const Login = () => {
           url:'https://bookbazzar-backend.onrender.com/api/v1/cart/',
           method:"GET"
         })
-        console.log(cartResponse.data)
         dispatch(setCart({
-          cart:[...cartResponse.data.data.items],
-          totalPrice:cartResponse.data.data?.cartTotal,
-          discountedTotalPrice: cartResponse.data.data.discountedTotal,
+          cart:[...cartResponse.data?.data.items],
+          totalPrice:cartResponse.data?.data?.cartTotal,
+          discountedTotalPrice: cartResponse.data?.data?.discountedTotal,
         }
         ))
 
