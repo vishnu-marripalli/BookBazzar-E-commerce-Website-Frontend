@@ -192,7 +192,7 @@ const Login = () => {
       //   "https://domain/api/v1/user/google",
       //   "_self"
       // );
-      window.open("http://localhost:8000/api/v1/user/google", "_self");
+      window.open("https://bookbazzar-backend.onrender.com/api/v1/user/google", "_self");
     } catch (error) {
       toast.error("Sing in Failed", {
         position: "top-center",
