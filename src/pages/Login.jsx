@@ -61,6 +61,37 @@ const Login = () => {
   const { register: registerForm2, handleSubmit: handleSubmitForm2, reset: resetForm2,watch, formState: { errors: errorsForm2 } } = useForm();
   const setpassword = watch("setpassword");
 
+ // Error handling utility
+ const handleApiError = (error) => {
+  setIsLoading(false);
+  
+  if (error) {
+    const { data } = error;
+    // Handle validation errors
+    if (data?.includes("Invaild Password")) {
+      toast.error("Invaild Password");
+      return;
+    }if (data?.includes("Email not verified")) {
+      toast.error("Email not verified. Please verify");
+      return;
+    }
+    
+    // Handle specific error messages
+    if (data?.includes("User Already exists")) {
+      toast.error("An account with this email already exists. Please sign in instead.");
+    } 
+    if (data?.includes("User does not exist")) {
+      toast.error("User does not exist");
+    }else{
+    // toast.error("An unexpected error occurred. Please try again.");
+    }
+  }
+  
+  // Generic error
+};
+
+
+
   const handlelogin =async(data)=>{
     console.log(data)
     try {
@@ -125,7 +156,9 @@ const Login = () => {
       }  
       if (response.error) {
         setIsLoading(false);
-        toast.error("Error While Login")
+        // toast.error("Error While Login")
+       console.log( response.error)
+       handleApiError(response.error);
         // if (response.error.data.errors) {
         //   const errorKeys = Object.keys(response.error.data.errors);
         //   if (errorKeys.length > 0) {
@@ -182,6 +215,12 @@ const Login = () => {
         dispatch(register(response.data.data.user.email))
         navigate("/email-verification");
 
+      }
+      if (response.error) {
+        setIsLoading(false);
+        // toast.error("Error While Login")
+       console.log( response.error)
+       handleApiError(response.error);
       }
      } catch (error) {
       
