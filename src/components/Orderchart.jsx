@@ -19,7 +19,6 @@ const OrderStatsChart = () => {
         method: 'POST',
         data: { role: 'User' },
       });
-      console.log(res.data)
       setOrderData(res.data.data);
     } catch (error) {
       console.error("Failed to fetch order stats:", error);
@@ -35,14 +34,14 @@ const OrderStatsChart = () => {
     datasets: [
       {
         label: 'Order Count',
-        data: [orderData.pending.count, orderData.successful.count],
+        data: [orderData?.pending?.count, orderData.successful?.count],
         backgroundColor: ['#937DC2', '#4CAF50'],
         borderColor: ['#000000', '#000000'],
         borderWidth: 1,
       },
       {
         label: 'Total Amount',
-        data: [orderData.pending.totalAmount, orderData.successful.totalAmount],
+        data: [orderData?.pending?.totalAmount, orderData?.successful?.totalAmount],
         backgroundColor: ['#FFCC00', '#00CC99'],
         borderColor: ['#000000', '#000000'],
         borderWidth: 1,
