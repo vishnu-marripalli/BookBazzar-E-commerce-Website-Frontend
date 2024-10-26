@@ -7,7 +7,6 @@ import { toast, ToastContainer } from "react-toastify";
 
 const VerifyEmail = () => {
   const userEmail = useSelector((state) => state.user.user?.email);
-  console.log(userEmail)
   const [email, setEmail] = useState(userEmail || "");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -65,7 +64,7 @@ const VerifyEmail = () => {
             </h2>
             <p className="text-center text-xs sm:text-sm text-gray-500 my-4">
               A verification link has been sent to your email address:{" "}
-              <span className="text-[#f68c23]">{email}</span>
+              <span className="text-primary">{email}</span>
               <br />
               Please check your email and click on the link provided to complete
               your account registration.

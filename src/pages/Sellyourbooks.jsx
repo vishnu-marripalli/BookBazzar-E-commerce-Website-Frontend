@@ -9,7 +9,7 @@ import { toast } from 'sonner';
 import { ThreeDots } from 'react-loader-spinner';
 
 const BookCreationForm = () => {
-  const { register,reset, handleSubmit, formState: { errors } } = useForm();
+  const { register, reset, handleSubmit, formState: { errors } } = useForm();
   const [isLoading, setIsLoading] = useState(false);
 
   const [mainImage, setMainImage] = useState(null);
@@ -31,7 +31,7 @@ const BookCreationForm = () => {
 
     try {
       const response = await axios.post('https://bookbazzar-backend.onrender.com/api/v1/book/create', formData, {
-      // const response = await axios.post('http://localhost:8000/api/v1/book/create', formData, {
+        // const response = await axios.post('http://localhost:8000/api/v1/book/create', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}` // Assuming you store the token in localStorage
@@ -43,12 +43,12 @@ const BookCreationForm = () => {
         position: 'top-center',
         autoClose: 3000,
       });
-  
-     
+
+
       setMainImage(null);
       setSubImages([]);
       reset(); // If you are using react-hook-form's reset
-      } catch (error) {
+    } catch (error) {
       console.error('Error creating book:', error);
       setIsLoading(false)
       toast.error('Error while creating Book', {
@@ -85,11 +85,11 @@ const BookCreationForm = () => {
         console.log(error);
       }
     };
-   
+
     fetchOrderDetails();
   }, [page]);
-// Assuming `orders` is the data array from the API response
-const columns = React.useMemo(
+  // Assuming `orders` is the data array from the API response
+  const columns = React.useMemo(
     () => [
       {
         Header: "Order ID",
@@ -103,7 +103,7 @@ const columns = React.useMemo(
         Header: "Book",
         accessor: "orderItems.book.title",
       },
-      
+
       {
         Header: "Quantity",
         accessor: "orderItems.quantity",
@@ -135,7 +135,7 @@ const columns = React.useMemo(
     }
   };
 
-  
+
   const data = orders.map(order => ({
     ...order,
   }));
@@ -146,7 +146,7 @@ const columns = React.useMemo(
       <div className="flex md:px-10 gap-5 overflow-hidden my-10 flex-col lg:flex-row w-full">
         <form onSubmit={handleSubmit(onSubmit)} className="max-w-lg mx-auto lg:w-1/3 p-4 bg-white shadow-md rounded-lg">
           <h2 className="text-2xl font-bold mb-4">Add your Book</h2>
-          
+
           <div className="mb-4">
             <label className="block mb-2">Title</label>
             <input {...register('title', { required: 'Title is required' })} className="w-full p-2 border rounded" />
@@ -172,13 +172,13 @@ const columns = React.useMemo(
           </div>
 
           <div className="mb-4">
-              <label className="block mb-2">Condition</label>
-              <select {...register('condition', { required: 'Condition is required' })} className="w-full p-2 border rounded">
-                <option value="">Select condition</option> {/* Default option */}
-                <option value="NEW">NEW</option>
-                <option value="USED">USED</option>
-              </select>
-              {errors.condition && <span className="text-red-500">{errors.condition.message}</span>}
+            <label className="block mb-2">Condition</label>
+            <select {...register('condition', { required: 'Condition is required' })} className="w-full p-2 border rounded">
+              <option value="">Select condition</option> {/* Default option */}
+              <option value="NEW">NEW</option>
+              <option value="USED">USED</option>
+            </select>
+            {errors.condition && <span className="text-red-500">{errors.condition.message}</span>}
           </div>
 
 
@@ -219,19 +219,18 @@ const columns = React.useMemo(
           <button type="submit" className="w-full hover:bg-white hover:text-primary   duration-200 ease-in border-2 border-primary bg-primary w-[150px] px-6 py-2 text-sm text-white rounded-sm">Sell Your Book</button>
         </form>
         <div className="lg:w-2/3 p-4 lg:min-h-[500px] flex flex-col ">
-        <OrderStatistics />
-        <Table
-        columns={columns}
-        data={orders}
-        Heading="Order List"
-        />
-        <div className="pagination-controls flex w-full justify-between mt-8">
+          <OrderStatistics />
+          <Table
+            columns={columns}
+            data={orders}
+            Heading="Order List"
+          />
+          <div className="pagination-controls flex w-full justify-between mt-8">
             <button
               onClick={handlePreviousPage}
               disabled={page === 1}
-              className={`px-3 py-2 bg-gray-300 rounded ${
-                page === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-400'
-              }`}
+              className={`px-3 py-2 bg-gray-300 rounded ${page === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-400'
+                }`}
             >
               Previous
             </button>
@@ -239,13 +238,12 @@ const columns = React.useMemo(
             <button
               onClick={handleNextPage}
               disabled={page === totalPages}
-              className={`px-3 py-2 bg-gray-300 rounded ${
-                page === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-400'
-              }`}
+              className={`px-3 py-2 bg-gray-300 rounded ${page === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-400'
+                }`}
             >
               Next
             </button>
-        </div>
+          </div>
         </div>
       </div>
       {isLoading && (

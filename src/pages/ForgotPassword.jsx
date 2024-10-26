@@ -81,7 +81,7 @@ const ForgotPassword = () => {
         setIsLoading(true);
         const response = await ApiCall({
           url: "https://bookbazzar-backend.onrender.com/api/v1/user/verify-otp",
-        // url: `http://localhost:8000/api/v1/user/verify-otp`,
+          // url: `http://localhost:8000/api/v1/user/verify-otp`,
 
           method: "POST",
           data: {
@@ -173,7 +173,7 @@ const ForgotPassword = () => {
                   ))}
                 </div>
                 <div className="flex justify-center my-2">
-                <button className="hover:bg-white hover:text-primary  my-4  duration-200 ease-in border-2 border-primary bg-primary w-[100%] px-6 py-2 text-base sm:text-xl font-semibold text-white rounded-sm">Conform OTP</button>
+                  <button className="hover:bg-white hover:text-primary  my-4  duration-200 ease-in border-2 border-primary bg-primary w-[100%] px-6 py-2 text-base sm:text-xl font-semibold text-white rounded-sm">Conform OTP</button>
                 </div>
               </form>
             </div>

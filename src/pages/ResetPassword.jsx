@@ -13,7 +13,6 @@ const ResetPassword = () => {
 
   const navigate = useNavigate();
   const { token } = useParams();
-    // console.log(token)
   const validatePassword = (password) => {
     if (password.length < 8) {
       setPasswordErrorMessage("Password must be at least 8 characters long");
@@ -29,8 +28,7 @@ const ResetPassword = () => {
         try {
           setIsLoading(true);
           const response = await ApiCall({
-         
-               url: `https://bookbazzar-backend.onrender.com/api/v1/user/reset-password/${token}`,
+            url: `https://bookbazzar-backend.onrender.com/api/v1/user/reset-password/${token}`,
             // url: `http://localhost:8000/api/v1/user/reset-password/${token}`,
             method: "POST",
             data: {
@@ -102,7 +100,9 @@ const ResetPassword = () => {
               />
 
               <div className="sm:my-4 my-2 flex flex-col gap-4">
-              <button className="hover:bg-white hover:text-primary  my-4  duration-200 ease-in border-2 border-primary bg-primary w-[100%] px-6 py-2 text-base sm:text-xl font-semibold text-white rounded-sm">Reset Password</button>
+                <button className="hover:bg-white hover:text-primary  my-4  duration-200 ease-in border-2 border-primary bg-primary w-[100%] px-6 py-2 text-base sm:text-xl font-semibold text-white rounded-sm">
+                  Reset Password
+                </button>
               </div>
             </form>
           </div>

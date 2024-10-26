@@ -22,7 +22,6 @@ const VerifyEmailSuccess = () => {
         });
         setIsLoading(false);
         if (response.data) {
-          console.log(response)
           setEmailVerified(true);
         }
         if (
