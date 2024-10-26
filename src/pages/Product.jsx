@@ -13,6 +13,7 @@ import { setCart,initCart } from "../features/cart";
 import gsap from 'gsap';
 import { toast } from 'sonner';
 import ApiCall from '../lib/ApiCall';
+import { setWishlist } from '../features/Wishlist';
 
 const Product =()=> {
 
@@ -54,7 +55,8 @@ const Product =()=> {
     })
     const [mainImage, setMainImage] = useState(book.mainImage); // State to store the main image
     const [subImages, setSubImages] = useState([...book.subImages]);
-  
+    const [isWishlist, setIsWishlist] = useState(book.wishlist);
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const subImagesContainerRef =useRef(null)
@@ -96,7 +98,24 @@ const Product =()=> {
 
       }, [bookid,books]);
 
-
+      const AddToWishlist =async()=>{
+        setIsWishlist((prev) => !prev);
+        const method = isWishlist ? "DELETE" : "POST";
+        try {
+          const response = await ApiCall({
+            url: `https://bookbazzar-backend.onrender.com/api/v1/wishlist/${book._id}`,
+            method,
+          });
+          if (response.data) {
+            dispatch(setWishlist(response.data.data.Books));
+            toast.success("Book Added to wishlist")
+            // eslint-disable-next-line no-restricted-globals
+            // location.reload()
+          }
+        } catch (error) {
+          console.log("Wishlist error:", error);
+        }
+      }
       const AddToCartHandler = async ( )=>{
         setIsLoading(true);
         await ApiCall({
@@ -233,7 +252,8 @@ const Product =()=> {
                    <button className='hover:bg-white hover:text-primary   duration-200 ease-in border-2 border-primary bg-primary md:w-[250px] px-6 py-2 text-base sm:text-sm text-white rounded-sm'
                     onClick={AddToCartHandler}
                     >Add to cart</button>
-                    <button className='hover:bg-primary hover:text-white   duration-200 ease-in border-2 border-primary bg-white md:w-[250px] px-6 py-2 text-base sm:text-sm text-primary rounded-sm'
+                    <button
+                    onClick={AddToWishlist} className='hover:bg-primary hover:text-white   duration-200 ease-in border-2 border-primary bg-white md:w-[250px] px-6 py-2 text-base sm:text-sm text-primary rounded-sm'
                     >Favouite
                     </button>
                 </div>
