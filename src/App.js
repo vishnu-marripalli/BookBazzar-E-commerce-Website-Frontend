@@ -18,6 +18,8 @@ import { useSelector } from "react-redux";
 import Redirect from "./pages/Redirect";
 import State from "./components/State";
 import Profile from "./pages/Profile";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 
 
@@ -44,6 +46,8 @@ function App() {
       
       <Route path="/email-verification" element={<VerifyEmail />} />
       <Route key={"token"} path="/email-verification/:token" element={<VerifyEmailSuccess />} />
+      <Route  path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password/:token" element={<ResetPassword />} />
 
       <Route path="user/:accessToken/:refreshToken" element={<Redirect />} />
 

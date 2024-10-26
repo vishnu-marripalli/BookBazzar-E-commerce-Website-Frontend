@@ -147,7 +147,7 @@ const ProductCard = ({book,Home,onwishlisttoggle})=> {
                 <h1 className="text-xl overflow-hidden h-[30px] font-semibold ">{book.title}</h1>
                 <h1 className="text-xs " style={{color:'#4D4C4C'}}>{book.author.trim('')}</h1>
                     <div className="flex flex-row justify-between items-center">
-                        <h1 className="text-xl font-semibold">{book.price}</h1>
+                        <h1 className="text-xl font-semibold">Rs. {book.price}</h1>
                         <div>
                         {isWishlist ? (
                         <FaHeart

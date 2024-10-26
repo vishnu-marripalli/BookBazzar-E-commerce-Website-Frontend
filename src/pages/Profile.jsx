@@ -73,7 +73,6 @@ const columns = React.useMemo(
   const data = orders.map(order => ({
     ...order,
   }));
-console.log(data)
   const fetchUserDetails = () => {
         setFormData({
       fullName: user?.fullName || '',

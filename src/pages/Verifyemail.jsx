@@ -75,7 +75,7 @@ const VerifyEmail = () => {
       </div>
       <ToastContainer />
       {isLoading && (
-        <div className="w-full h-screen custom-flex fixed top-0 left-0 bg-white z-50">
+        <div className="w-full h-screen flex justify-center items-center fixed top-0 left-0 bg-white z-50">
           <ThreeDots
             visible={true}
             height="80"

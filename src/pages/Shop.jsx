@@ -34,12 +34,13 @@ import ApiCall from '../lib/ApiCall';
     }
 
     useEffect(() => {
+      setIsLoading(true)
      ApiCall({
       url:'https://bookbazzar-backend.onrender.com/api/v1/book/',
       method:"GET",
       params:{
         limit: 10,
-        page: 1,
+        page: page,
         sortType,
       }
      }).then((response)=>{
@@ -47,7 +48,7 @@ import ApiCall from '../lib/ApiCall';
       const books =response.data.data.docs
       sethasnxtpage(response.data.data.hasNextPage)
       if(!isAuthenticated){
-        setbooks(books)
+        setbooks((prev)=>[...prev,...books])
         setIsLoading(false);
       }
       const updatedProducts = books.map((book) => {
@@ -59,8 +60,8 @@ import ApiCall from '../lib/ApiCall';
           wishlist,
         };
       });
-      setbooks(updatedProducts);
-     })
+      setbooks((prev)=>[...prev,...updatedProducts])
+    })
      setIsLoading(false);
 
     }, [sortType,page,isWishlist])

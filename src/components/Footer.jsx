@@ -4,6 +4,7 @@ import { MdOutlineSendToMobile } from "react-icons/md";
 import { Link } from 'react-router-dom';
 import { Toaster,toast } from 'sonner';
 import { TailSpin } from 'react-loader-spinner';
+import ApiCall from '../lib/ApiCall';
 
 
 
@@ -12,10 +13,9 @@ export default function Footer() {
 
   const [email,setEmail] = useState('')
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const [isLoading, setisLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
-  const SubscribeHandler = ()=>{
-    setisLoading(true)
+  const subscribeHandler = () => {
     if (!email || email.trim().length === 0) {
       toast.error("Email is required");
       return;
@@ -23,10 +23,37 @@ export default function Footer() {
     if (!email.match(emailRegex)) {
       toast.error("Invalid Email");
       return;
+    // } else {
+    //   setIsLoading(true);
+    //   ApiCall({
+    //     url: "/api/v1/subscribe/",
+    //     method: "POST",
+    //     data: {
+    //       email: email,
+    //     },
+    //   })
+    //     .then((response) => {
+    //       if (response.data) {
+    //         const message = response.data.message;
+    //         setIsLoading(false);
+    //         toast.success(message);
+    //         return;
+    //       }
+    //       if (response.error) {
+    //         setIsLoading(false);
+    //         const errorMessage = response.error.data.message;
+    //         toast.error(errorMessage);
+    //         return;
+    //       }
+    //     })
+    //     .catch(() => {
+    //       setIsLoading(false);
+    //       toast.error("Try again something went wrong");
+    //       return;
+    //     });
     }
+  };
 
-    //Handle api to post email for coupon
-  }
 
   return (
     <>
@@ -42,7 +69,7 @@ export default function Footer() {
               placeholder='Enter your email'
               onChange={(e)=>(setEmail(e.target.value))} />
               <button className='font-bold border-2 p-1 text-[12px] min-w-20 flex items-center justify-center sm:text-sm sm:p-[9px] border-white'
-              onClick={SubscribeHandler}>
+              onClick={subscribeHandler}>
               
                 {isLoading ?
                 (<TailSpin

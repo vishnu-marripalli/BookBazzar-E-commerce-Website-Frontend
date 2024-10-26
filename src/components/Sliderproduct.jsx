@@ -15,7 +15,11 @@ const Sliderproduct =({title, category})=> {
 
 // const UncategorizedBooks = useSelector((state)=>(state.features.books))
 const isAuthenticated = useSelector((state)=> state.user.isAuthenticated)
+const [isWishlist, setIsWishlist] = useState(false);
 
+const onwishlisttoggle =()=>{
+  setIsWishlist((prev)=>!prev)
+}
   const [books,setbooks]=useState([]);
   const [UncategorizedBooks, setUncategorizedBooks] = useState([])
   const wishlistProducts = useSelector(
@@ -47,7 +51,7 @@ const isAuthenticated = useSelector((state)=> state.user.isAuthenticated)
    })
    setIsLoading(false);
 
-  }, [])
+  }, [isWishlist])
 
       const [isLoading, setIsLoading] = useState(false);
 
@@ -258,7 +262,7 @@ const isAuthenticated = useSelector((state)=> state.user.isAuthenticated)
                 {/* Render the Product component within Slider */}
                 {books.map((book) => (
                   <div key={books._id}>
-                    <ProductCard book={book} Home={true} />
+                    <ProductCard book={book} Home={true} onwishlisttoggle={onwishlisttoggle}/>
                   </div>
                 ))}
               </Slider>
@@ -266,7 +270,7 @@ const isAuthenticated = useSelector((state)=> state.user.isAuthenticated)
               <div className="grid md:grid-cols-4 grid-cols-2">
                 {books.map((book) => (
                   <div key={books._id}>
-                    <ProductCard book={book} Home={true} />
+                    <ProductCard book={book} Home={true} onwishlisttoggle={onwishlisttoggle} />
                   </div>
                 ))}
                   </div>
