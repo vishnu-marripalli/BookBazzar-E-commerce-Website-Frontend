@@ -188,7 +188,7 @@ const Product = () => {
   return (
     <>
       <Pagebanner title={book.title} />
-      <div ref={Productref} className='md:min-h-[80vh] w-full md:px-14 sm:my-3 sm:px-6 opacity-0 px-4 py-4'>
+      <div ref={Productref} className='md:min-h-[80vh] w-full md:px-14 sm:my-3 sm:px-6 opacity-15 px-4 py-4'>
         <div className='w-full flex flex-col md:flex-row'>
           <div className="md:w-[50%] w-full overflow-hidden flex md:flex-row flex-col-reverse items-center sm:items-start gap-2">
             <div

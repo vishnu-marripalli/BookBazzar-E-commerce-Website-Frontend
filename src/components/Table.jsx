@@ -105,7 +105,7 @@ const Table = ({
                   {row.cells.map((cell) => (
                     <td
                       {...cell.getCellProps()}
-                      className="py-2 px-4 border-b border-gray-300 max-w-[200px] text-gray-600 text-sm"
+                      className="py-2 px-4 border-b border-gray-300 max-w-[200px] overflow-hidden text-gray-600 text-sm"
                     >
                       {cell.render("Cell")}
                     </td>

@@ -21,6 +21,8 @@ const Profile = () => {
 
 
   const [orders, setOrders] = React.useState([]);
+  const [page, setPage] = useState(1); // Track the current page
+  const [totalPages, setTotalPages] = useState(0); // Track the total number of pages
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
@@ -29,6 +31,10 @@ const Profile = () => {
           url: 'https://bookbazzar-backend.onrender.com/api/v1/order/orderdetails',
           method: 'POST',
           data: { role: 'User' },
+          params: {
+            limit: 10, // Limit the number of categories per page
+            page,      // Current page number
+          },
         });
         setOrders(res.data.data.orders); // Assuming response structure matches
       } catch (error) {
@@ -69,7 +75,17 @@ const Profile = () => {
     ],
     []
   );
+  const handleNextPage = () => {
+    if (page < totalPages) {
+      setPage(page + 1); // Move to the next page
+    }
+  };
 
+  const handlePreviousPage = () => {
+    if (page > 1) {
+      setPage(page - 1); // Move to the previous page
+    }
+  };
   const data = orders.map(order => ({
     ...order,
   }));
@@ -141,6 +157,7 @@ const Profile = () => {
         const response = await fetch('https://bookbazzar-backend.onrender.com/api/v1/user/self', {
           method: 'PUT',
           headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Fetch here for fresh token
             'Content-Type': 'application/json',
           },
           credentials: 'include',
@@ -252,6 +269,25 @@ const Profile = () => {
           data={orders}
           Heading="Your Orders"
         />
+         <div className="pagination-controls flex w-full justify-between mt-8">
+            <button
+              onClick={handlePreviousPage}
+              disabled={page === 1}
+              className={`px-3 py-2 bg-gray-300 rounded ${page === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-400'
+                }`}
+            >
+              Previous
+            </button>
+            <span className="mx-2">Page {page} of {totalPages}</span>
+            <button
+              onClick={handleNextPage}
+              disabled={page === totalPages}
+              className={`px-3 py-2 bg-gray-300 rounded ${page === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-400'
+                }`}
+            >
+              Next
+            </button>
+          </div>
       </div>
 
     </>
